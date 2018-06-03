@@ -1,0 +1,21 @@
+version: '3'
+services:
+  db:
+    container_name: mydb
+    image: postgres:10.4
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      - TZ=Asia/Tokyo
+  web:
+    container_name: myweb
+    build: .
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    volumes:
+      - .:/myapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - TZ=Asia/Tokyo
